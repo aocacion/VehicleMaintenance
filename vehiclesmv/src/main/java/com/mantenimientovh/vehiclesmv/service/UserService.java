@@ -1,7 +1,7 @@
 package com.mantenimientovh.vehiclesmv.service;
 
-import com.mantenimientovh.vehiclesmv.domain.entities.User;
-import com.mantenimientovh.vehiclesmv.infraestructure.repositories.UserRepository;
+import com.mantenimientovh.vehiclesmv.infraestructure.persistence.entities.UserEntity;
+import com.mantenimientovh.vehiclesmv.infraestructure.persistence.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class UserService {
     }
 
     @Transactional
-    public String save(User u) {
+    public String save(UserEntity u) {
         if (u == null) throw new RuntimeException("bad request");
 
         this.verifyEmail(u.getEmail());
@@ -44,7 +44,7 @@ public class UserService {
         return "User saved successfully";
     }
 
-    public void createUser(User user) {
+    public void createUser(UserEntity user) {
         save(user);
         emailService.dispatchWelcomeEmailEvent(user.getEmail());
     }

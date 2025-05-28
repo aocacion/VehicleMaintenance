@@ -1,7 +1,9 @@
-package com.mantenimientovh.vehiclesmv.application;
+package com.mantenimientovh.vehiclesmv.infraestructure.web.controller;
 
-import com.mantenimientovh.vehiclesmv.domain.entities.Vehicle;
 import com.mantenimientovh.vehiclesmv.application.VehicleService;
+import com.mantenimientovh.vehiclesmv.infraestructure.persistence.entities.VehicleEntity;
+import com.mantenimientovh.vehiclesmv.infraestructure.web.dto.VehicleDTO;
+import com.mantenimientovh.vehiclesmv.infraestructure.web.mapper.VehicleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,32 +25,32 @@ public class VehicleController {
 
 
     @PostMapping
-    public ResponseEntity<Vehicle> registerVehicle(@RequestBody Vehicle vehicle) {
-        Vehicle savedVehicle = vehicleService.registerVehicle(vehicle);
+    public ResponseEntity<VehicleEntity> registerVehicle(@RequestBody VehicleDTO vehicleDTO) {
+        VehicleEntity savedVehicleEntity = vehicleService.registerVehicle(VehicleMapper.dtoToModel(vehicleDTO));
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(savedVehicle.getId())
+                .buildAndExpand(savedVehicleEntity.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(savedVehicle);
+        return ResponseEntity.created(location).body(savedVehicleEntity);
     }
 
     @GetMapping
-    public ResponseEntity<List<Vehicle>> getAllVehicles() {
+    public ResponseEntity<List<VehicleEntity>> getAllVehicles() {
         return ResponseEntity.ok(vehicleService.getAllVehicles());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Vehicle> getVehicleById(@PathVariable Long id) {
+    public ResponseEntity<VehicleEntity> getVehicleById(@PathVariable Long id) {
         return ResponseEntity.ok(vehicleService.getVehicleById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Vehicle> updateVehicle(
+    public ResponseEntity<VehicleEntity> updateVehicle(
             @PathVariable Long id,
-            @RequestBody Vehicle vehicleDetails) {
-        return ResponseEntity.ok(vehicleService.updateVehicle(id, vehicleDetails));
+            @RequestBody VehicleEntity vehicleEntityDetails) {
+        return ResponseEntity.ok(vehicleService.updateVehicle(id, vehicleEntityDetails));
     }
 
     @DeleteMapping("/{id}")
@@ -59,7 +61,7 @@ public class VehicleController {
 
     // Endpoints adicionales
     @GetMapping("/owner/{ownerId}")
-    public ResponseEntity<List<Vehicle>> getVehiclesByOwner(@PathVariable Long ownerId) {
+    public ResponseEntity<List<VehicleEntity>> getVehiclesByOwner(@PathVariable Long ownerId) {
         return ResponseEntity.ok(vehicleService.getVehiclesByOwner(ownerId));
     }
 

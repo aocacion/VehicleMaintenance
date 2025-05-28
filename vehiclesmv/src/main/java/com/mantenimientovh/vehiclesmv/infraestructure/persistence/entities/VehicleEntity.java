@@ -1,11 +1,11 @@
-package com.mantenimientovh.vehiclesmv.domain.entities;
+package com.mantenimientovh.vehiclesmv.infraestructure.persistence.entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vehicles")
-public class Vehicle {
+public class VehicleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,13 +45,13 @@ public class Vehicle {
     private LocalDateTime updatedAt;
 
     // Constructor por defecto
-    public Vehicle() {
+    public VehicleEntity() {
     }
 
     // Constructor con parámetros
-    public Vehicle(Long ownerId, String brand, String model, Integer year,
-                   String plateNumber, String vin, String color,
-                   String engineType, Integer mileage) {
+    public VehicleEntity(Long ownerId, String brand, String model, Integer year,
+                         String plateNumber, String vin, String color,
+                         String engineType, Integer mileage) {
         this.ownerId = ownerId;
         this.brand = brand;
         this.model = model;

@@ -1,9 +1,9 @@
-package com.mantenimientovh.vehiclesmv.domain.entities;
+package com.mantenimientovh.vehiclesmv.infraestructure.persistence.entities;
 
 import jakarta.persistence.*;
 
 @Entity
-public class User {
+public class UserEntity {
     String email;
     String country;
     int age;

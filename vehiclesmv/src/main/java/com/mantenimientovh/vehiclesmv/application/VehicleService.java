@@ -1,7 +1,9 @@
 package com.mantenimientovh.vehiclesmv.application;
 
-import com.mantenimientovh.vehiclesmv.domain.entities.Vehicle;
-import com.mantenimientovh.vehiclesmv.infraestructure.repositories.VehicleRepository;
+import com.mantenimientovh.vehiclesmv.domain.model.Vehicle;
+import com.mantenimientovh.vehiclesmv.infraestructure.persistence.entities.VehicleEntity;
+import com.mantenimientovh.vehiclesmv.infraestructure.persistence.repositories.VehicleRepository;
+import com.mantenimientovh.vehiclesmv.infraestructure.web.mapper.VehicleMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,38 +19,38 @@ public class VehicleService {
     }
 
     // Registrar un nuevo vehículo
-    public Vehicle registerVehicle(Vehicle vehicle) {
-        return vehicleRepository.save(vehicle);
+    public VehicleEntity registerVehicle(Vehicle vehicle) {
+        return vehicleRepository.save(VehicleMapper.modelToEntity(vehicle));
     }
 
     // Obtener todos los vehículos
     @Transactional(readOnly = true)
-    public List<Vehicle> getAllVehicles() {
+    public List<VehicleEntity> getAllVehicles() {
         return vehicleRepository.findAll();
     }
 
     // Obtener vehículo por ID
     @Transactional(readOnly = true)
-    public Vehicle getVehicleById(Long id) {
+    public VehicleEntity getVehicleById(Long id) {
         return vehicleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vehículo no encontrado con ID: " + id));
     }
 
     // Actualizar vehículo
-    public Vehicle updateVehicle(Long id, Vehicle vehicleDetails) {
-        Vehicle vehicle = getVehicleById(id);
+    public VehicleEntity updateVehicle(Long id, VehicleEntity vehicleEntityDetails) {
+        VehicleEntity vehicleEntity = getVehicleById(id);
 
-        if (vehicleDetails.getBrand() != null) {
-            vehicle.setBrand(vehicleDetails.getBrand());
+        if (vehicleEntityDetails.getBrand() != null) {
+            vehicleEntity.setBrand(vehicleEntityDetails.getBrand());
         }
 
-        if (vehicleDetails.getModel() != null) {
-            vehicle.setModel(vehicleDetails.getModel());
+        if (vehicleEntityDetails.getModel() != null) {
+            vehicleEntity.setModel(vehicleEntityDetails.getModel());
         }
 
         // Actualizar otros campos según necesidad...
 
-        return vehicleRepository.save(vehicle);
+        return vehicleRepository.save(vehicleEntity);
     }
 
     // Eliminar vehículo
@@ -61,7 +63,7 @@ public class VehicleService {
 
     // Métodos adicionales
     @Transactional(readOnly = true)
-    public List<Vehicle> getVehiclesByOwner(Long ownerId) {
+    public List<VehicleEntity> getVehiclesByOwner(Long ownerId) {
         return vehicleRepository.findByOwnerId(ownerId);
     }
 }
